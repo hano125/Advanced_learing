@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\frontController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,11 @@ Route::get('/dashboard', function () {
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
-
-require __DIR__.'/auth.php';
+//front route
+Route::controller(frontController::class)->prefix('front')->name('front.')->group(function () {
+    Route::get("index", 'index')->name('index');
+    Route::get("contact", action: 'contact')->name("contact");
+    Route::get("about", action: 'about')->name("about");
+    Route::get("service", action: 'service')->name("service");
+});
+require __DIR__ . '/auth.php';
