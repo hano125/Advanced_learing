@@ -3,6 +3,8 @@
 use App\Http\Controllers\frontController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,10 +37,11 @@ Route::controller(frontController::class)->prefix('front')->name('front.')->grou
     Route::get("about", action: 'about')->name("about");
     Route::get("service", action: 'service')->name("service");
 });
-Route::name("admin.")->middleware('auth')->prefix('admin')->group(
-    function () {
-        Route::view('index', "admin.index")->name('index')->middleware('auth');
-        //Route::view('login', "admin.login")->name('login');
-    }
-);
+Route::name("admin.")->prefix(LaravelLocalization::setLocale() . '/admin')
+    ->middleware(['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'])->group(
+        function () {
+            Route::view('index', "admin.index")->name('index');
+            //Route::view('login', "admin.login")->name('login');
+        }
+    );
 require __DIR__ . '/auth.php';
